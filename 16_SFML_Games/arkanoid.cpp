@@ -9,24 +9,24 @@ int arkanoid()
     RenderWindow app(VideoMode(520, 450), "Arkanoid!");
     app.setFramerateLimit(60);
 
-    Texture t1,t2,t3,t4;
-    t1.loadFromFile("images/arkanoid/block01.png");
-    t2.loadFromFile("images/arkanoid/background.jpg");
-    t3.loadFromFile("images/arkanoid/ball.png");
-    t4.loadFromFile("images/arkanoid/paddle.png");
+    Texture blockTexture,backgroundTexture,ballTexture,paddleTexture;
+    blockTexture.loadFromFile("images/arkanoid/block01.png");
+    backgroundTexture.loadFromFile("images/arkanoid/background.jpg");
+    ballTexture.loadFromFile("images/arkanoid/ball.png");
+    paddleTexture.loadFromFile("images/arkanoid/paddle.png");
 
-    Sprite sBackground(t2), sBall(t3), sPaddle(t4);
-    sPaddle.setPosition(300,440);
+    Sprite spriteBackground(backgroundTexture), spriteBall(ballTexture), spritePaddle(paddleTexture);
+    spritePaddle.setPosition(300,440);
 
     Sprite block[1000];
 
-    int n=0;
-    for (int i=1;i<=10;i++)
-    for (int j=1;j<=10;j++)
+    int count=0;
+    for (int xRow=1;xRow<=10;xRow++)
+    for (int yRow=1;yRow<=10;yRow++)
       {
-         block[n].setTexture(t1);
-         block[n].setPosition(i*43,j*20);
-         n++;
+         block[count].setTexture(blockTexture);
+         block[count].setPosition(xRow*43,yRow*20);
+         count++;
       }
 
     float dx=6, dy=5;
@@ -42,31 +42,31 @@ int arkanoid()
        }
 
     x+=dx;
-    for (int i=0;i<n;i++)
+    for (int i=0;i<count;i++)
         if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
              {block[i].setPosition(-100,0); dx=-dx;}
 
     y+=dy;
-    for (int i=0;i<n;i++)
+    for (int i=0;i<count;i++)
         if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
              {block[i].setPosition(-100,0); dy=-dy;}
 
     if (x<0 || x>520)  dx=-dx;
     if (y<0 || y>450)  dy=-dy;
 
-    if (Keyboard::isKeyPressed(Keyboard::Right)) sPaddle.move(6,0);
-    if (Keyboard::isKeyPressed(Keyboard::Left)) sPaddle.move(-6,0);
+    if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6,0);
+    if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6,0);
 
-    if ( FloatRect(x,y,12,12).intersects(sPaddle.getGlobalBounds()) ) dy=-(rand()%5+2);
+    if ( FloatRect(x,y,12,12).intersects(spritePaddle.getGlobalBounds()) ) dy=-(rand()%5+2);
 
-    sBall.setPosition(x,y);
+    spriteBall.setPosition(x,y);
 
     app.clear();
-    app.draw(sBackground);
-    app.draw(sBall);
-    app.draw(sPaddle);
+    app.draw(spriteBackground);
+    app.draw(spriteBall);
+    app.draw(spritePaddle);
 
-    for (int i=0;i<n;i++)
+    for (int i=0;i<count;i++)
      app.draw(block[i]);
 
     app.display();
