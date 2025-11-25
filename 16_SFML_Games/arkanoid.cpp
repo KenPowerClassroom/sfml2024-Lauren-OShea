@@ -17,15 +17,16 @@ int arkanoid()
 
     Sprite spriteBackground(backgroundTexture), spriteBall(ballTexture), spritePaddle(paddleTexture);
     spritePaddle.setPosition(300,440);
+    int const NUMBER_OF_BLOCKS = 100;
 
-    Sprite block[1000];
+    Sprite block[NUMBER_OF_BLOCKS];
 
     int count=0;
-    for (int xRow=1;xRow<=10;xRow++)
-    for (int yRow=1;yRow<=10;yRow++)
+    for (int column=1;column<=10;column++)
+    for (int row=1;row<=10;row++)
       {
          block[count].setTexture(blockTexture);
-         block[count].setPosition(xRow*43,yRow*20);
+         block[count].setPosition(column*43,row*20);
          count++;
       }
 
