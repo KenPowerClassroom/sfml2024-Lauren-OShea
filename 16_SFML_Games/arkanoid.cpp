@@ -2,6 +2,7 @@
 #include <time.h>
 using namespace sf;
 
+
 int arkanoid()
 {
     srand(time(0));
@@ -18,7 +19,8 @@ int arkanoid()
     Sprite spriteBackground(backgroundTexture), spriteBall(ballTexture), spritePaddle(paddleTexture);
     spritePaddle.setPosition(300,440);
     int const NUMBER_OF_BLOCKS = 100;
-
+    int const WIDTH_OF_BLOCK = 43;
+    int const HEIGHT_OF_BLOCK = 20;
     Sprite block[NUMBER_OF_BLOCKS];
 
     int count=0;
@@ -26,31 +28,34 @@ int arkanoid()
     for (int row=1;row<=10;row++)
       {
          block[count].setTexture(blockTexture);
-         block[count].setPosition(column*43,row*20);
+         block[count].setPosition(column*WIDTH_OF_BLOCK,row*HEIGHT_OF_BLOCK);
          count++;
       }
 
     float dx=6, dy=5;
     float x=300, y=300;
+    int const SET_POSITION_X = -100;
+    int const   SET_POSITION_Y = 0;
+
 
     while (app.isOpen())
     {
-       Event e;
-       while (app.pollEvent(e))
+       Event endGame;
+       while (app.pollEvent(endGame))
        {
-         if (e.type == Event::Closed)
+         if (endGame.type == Event::Closed)
              app.close();
        }
 
     x+=dx;
     for (int i=0;i<count;i++)
         if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
-             {block[i].setPosition(-100,0); dx=-dx;}
+             {block[i].setPosition(setPositionX,setPositionY); dx=-dx;}
 
     y+=dy;
     for (int i=0;i<count;i++)
         if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
-             {block[i].setPosition(-100,0); dy=-dy;}
+             {block[i].setPosition(setPositionX,setPositionY); dy=-dy;}
 
     if (x<0 || x>520)  dx=-dx;
     if (y<0 || y>450)  dy=-dy;
