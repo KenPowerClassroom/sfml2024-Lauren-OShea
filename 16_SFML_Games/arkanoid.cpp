@@ -3,6 +3,22 @@
 using namespace sf;
 
 
+
+void draw(RenderWindow& app, Sprite& spriteBackground, Sprite& spriteBall, Sprite& spritePaddle, Sprite* block, int const& NUMBER_OF_BLOCKS)
+{
+    app.clear();
+    app.draw(spriteBackground);
+    app.draw(spriteBall);
+    app.draw(spritePaddle);
+
+    for (int currentBlock = 0;currentBlock < NUMBER_OF_BLOCKS;currentBlock++)
+    {
+        app.draw(block[currentBlock]);
+    }
+    app.display();
+
+
+}
 int arkanoid()
 {
     srand(time(0));
@@ -35,47 +51,43 @@ int arkanoid()
     float dx=6, dy=5;
     float x=300, y=300;
     int const SET_POSITION_X = -100;
-    int const   SET_POSITION_Y = 0;
+    int const SET_POSITION_Y = 0;
 
 
     while (app.isOpen())
     {
-       Event endGame;
-       while (app.pollEvent(endGame))
-       {
-         if (endGame.type == Event::Closed)
-             app.close();
-       }
+        Event endGame;
+        while (app.pollEvent(endGame))
+        {
+            if (endGame.type == Event::Closed)
+                app.close();
+        }
 
-    x+=dx;
-    for (int i=0;i<count;i++)
-        if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
-             {block[i].setPosition(setPositionX,setPositionY); dx=-dx;}
+        x += dx;
+        for (int i = 0;i < count;i++)
+            if (FloatRect(x + 3, y + 3, 6, 6).intersects(block[i].getGlobalBounds()))
+            {
+                block[i].setPosition(SET_POSITION_X, SET_POSITION_Y); dx = -dx;
+            }
 
-    y+=dy;
-    for (int i=0;i<count;i++)
-        if ( FloatRect(x+3,y+3,6,6).intersects(block[i].getGlobalBounds()) ) 
-             {block[i].setPosition(setPositionX,setPositionY); dy=-dy;}
+        y += dy;
+        for (int i = 0;i < count;i++)
+            if (FloatRect(x + 3, y + 3, 6, 6).intersects(block[i].getGlobalBounds()))
+            {
+                block[i].setPosition(SET_POSITION_X, SET_POSITION_Y); dy = -dy;
+            }
 
-    if (x<0 || x>520)  dx=-dx;
-    if (y<0 || y>450)  dy=-dy;
+        if (x < 0 || x>520)  dx = -dx;
+        if (y < 0 || y>450)  dy = -dy;
 
-    if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6,0);
-    if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6,0);
+        if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6, 0);
+        if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6, 0);
 
-    if ( FloatRect(x,y,12,12).intersects(spritePaddle.getGlobalBounds()) ) dy=-(rand()%5+2);
+        if (FloatRect(x, y, 12, 12).intersects(spritePaddle.getGlobalBounds())) dy = -(rand() % 5 + 2);
 
-    spriteBall.setPosition(x,y);
+        spriteBall.setPosition(x, y);
 
-    app.clear();
-    app.draw(spriteBackground);
-    app.draw(spriteBall);
-    app.draw(spritePaddle);
-
-    for (int i=0;i<count;i++)
-     app.draw(block[i]);
-
-    app.display();
+        draw(app, spriteBackground, spriteBall, spritePaddle, block, NUMBER_OF_BLOCKS);
     }
 
   return 0;
