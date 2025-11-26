@@ -2,7 +2,7 @@
 #include <time.h>
 using namespace sf;
 
-void setPos(Sprite* block, int const& NUMBER_OF_BLOCKS, float &dx, float &dy,float &x, float &y)
+void setBallPos(Sprite* block, int const& NUMBER_OF_BLOCKS, float& dx, float& dy, float& x, float& y)
 {
 
     int const SET_POSITION_X = -100;
@@ -23,6 +23,13 @@ void setPos(Sprite* block, int const& NUMBER_OF_BLOCKS, float &dx, float &dy,flo
         }
 
 
+}
+
+void movePaddle(Sprite& spritePaddle)
+{
+
+    if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6, 0);
+    if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6, 0);
 }
 
 void draw(RenderWindow& app, Sprite& spriteBackground, Sprite& spriteBall, Sprite& spritePaddle, Sprite* block, int const& NUMBER_OF_BLOCKS)
@@ -87,12 +94,14 @@ int arkanoid()
         if (x < 0 || x>520)  dx = -dx;
         if (y < 0 || y>450)  dy = -dy;
 
-        if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6, 0);
-        if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6, 0);
+        movePaddle(spritePaddle);
+
+       // if (Keyboard::isKeyPressed(Keyboard::Right)) spritePaddle.move(6, 0);
+       // if (Keyboard::isKeyPressed(Keyboard::Left)) spritePaddle.move(-6, 0);
 
         if (FloatRect(x, y, 12, 12).intersects(spritePaddle.getGlobalBounds())) dy = -(rand() % 5 + 2);
 
-        setPos(block, NUMBER_OF_BLOCKS, dx, dy, x, y);
+        setBallPos(block, NUMBER_OF_BLOCKS, dx, dy, x, y);
 
         spriteBall.setPosition(x, y);
 
